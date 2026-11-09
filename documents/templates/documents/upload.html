@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Offline AI Assistant</title>
+</head>
+<body>
+    <h1>Document Upload</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input
+            type="text"
+            name="title"
+            placeholder="Document title"
+            required
+        >
+
+        <input
+            type="file"
+            name="file"
+            accept=".pdf,.txt,.docx"
+            required
+        >
+
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Uploaded Documents</h2>
+
+    {% for document in documents %}
+        <div>
+            <strong>{{ document.title }}</strong>
+            <a href="{{ document.file.url }}">Download</a>
+            <small>{{ document.uploaded_at }}</small>
+        </div>
+    {% empty %}
+        <p>No documents uploaded.</p>
+    {% endfor %}
+</body>
+</html>
