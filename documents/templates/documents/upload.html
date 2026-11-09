@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -5,24 +6,20 @@
     <title>Offline AI Assistant</title>
 </head>
 <body>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
     <h1>Document Upload</h1>
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <input
-            type="text"
-            name="title"
-            placeholder="Document title"
-            required
-        >
+        <input type="text" name="title"
+               placeholder="Document title" required>
 
-        <input
-            type="file"
-            name="file"
-            accept=".pdf,.txt,.docx"
-            required
-        >
+        <input type="file" name="file"
+               accept=".pdf,.txt,.docx" required>
 
         <button type="submit">Upload</button>
     </form>
@@ -30,10 +27,27 @@
     <h2>Uploaded Documents</h2>
 
     {% for document in documents %}
-        <div>
+        <div style="border: 1px solid #ccc; padding: 15px; margin: 10px 0;">
             <strong>{{ document.title }}</strong>
             <a href="{{ document.file.url }}">Download</a>
             <small>{{ document.uploaded_at }}</small>
+
+            <form method="POST"
+                  action="{% url 'summarize' document.pk %}">
+                {% csrf_token %}
+                <button type="submit">
+                    {% if document.summary %}
+                        Summarize Again
+                    {% else %}
+                        Summarize
+                    {% endif %}
+                </button>
+            </form>
+
+            {% if document.summary %}
+                <h3>AI Summary</h3>
+                <p style="white-space: pre-wrap;">{{ document.summary }}</p>
+            {% endif %}
         </div>
     {% empty %}
         <p>No documents uploaded.</p>
