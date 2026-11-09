@@ -14,7 +14,7 @@ An offline-first personal AI document assistant built with Python.
 ## Development Roadmap
 
 - [x] Step 1: Django environment setup
-- [ ] Step 2: ML/DL and Local RAG
+- [x] Step 2: ML/DL and Local RAG
 - [ ] Step 3: FastAPI integration
 - [ ] Step 4: Django-FastAPI integration
 - [ ] Step 5: AI analysis and macOS app packaging
